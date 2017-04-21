@@ -1,9 +1,10 @@
-﻿using System.Net;
+﻿using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Connector;
+using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Connector;
 
 namespace CthulhuDiceBot
 {
@@ -16,7 +17,7 @@ namespace CthulhuDiceBot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message)
+            if (activity.Type == ActivityTypes.Message && Regex.IsMatch(activity.Text, @"^@\w+\s+[ -~｡-ﾟ]"))
             {
                 await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
             }
@@ -52,8 +53,8 @@ namespace CthulhuDiceBot
             }
             else if (message.Type == ActivityTypes.Ping)
             {
-            }
 
+            }
             return null;
         }
     }
