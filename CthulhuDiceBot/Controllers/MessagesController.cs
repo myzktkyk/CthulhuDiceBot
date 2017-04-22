@@ -1,4 +1,5 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using CthulhuDiceBot.Factories;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System.Net;
 using System.Net.Http;
@@ -17,7 +18,7 @@ namespace CthulhuDiceBot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message && Regex.IsMatch(activity.Text, @"^@\w+\s+[ -~｡-ﾟ]"))
+            if (activity.Type == ActivityTypes.Message && CommandFactory.Instance.IsCommand(activity))
             {
                 await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
             }
