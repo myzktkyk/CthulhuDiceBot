@@ -14,13 +14,16 @@ namespace CthulhuDiceBot.Factories
         private static readonly Dictionary<string, Tuple<Regex, Func<Activity, string>>> dictionary
             = new Dictionary<string, Tuple<Regex, Func<Activity, string>>>();
 
-        private static readonly Regex DiceCommandRegex = new Regex(@"dice\s+(\d+)[d|D](\d+)$");
+        private static readonly Regex DiceCommandRegex = new Regex(@"dice\s+(\d+)d(\d+)$");
 
         private static readonly Regex UsageCommandRegex = new Regex("usage$");
 
         private static readonly Regex MentionRegex = new Regex(@"^@\w+\s+");
 
-        private static readonly Regex RegistRegex = new Regex(@"regist\s+(\d+)/(\d+)$");
+        private static readonly Regex RegistCommandRegex = new Regex(@"regist\s+(\d+)/(\d+)$");
+
+        private static readonly Regex JudgeCommandRegex = new Regex(@"judge\s+(\d+)d(\d+)/(\d+)$");
+
 
         #endregion
 
@@ -44,8 +47,13 @@ namespace CthulhuDiceBot.Factories
             );
             dictionary.Add(
                 "Regist",
-                Tuple.Create<Regex, Func<Activity, string>>(RegistRegex, (a) => CalculateRegist(a))
+                Tuple.Create<Regex, Func<Activity, string>>(RegistCommandRegex, (a) => CalculateRegist(a))
             );
+            dictionary.Add(
+                "Judge",
+                Tuple.Create<Regex, Func<Activity, string>>(JudgeCommandRegex, (a) => CalculateJudge(a))
+            );
+
         }
 
         #endregion
@@ -93,22 +101,22 @@ namespace CthulhuDiceBot.Factories
 
         private string CalculateDice(Activity activity)
         {
-            var group = DiceCommandRegex.Match(activity.Text).Groups;
+            var group = DiceCommandRegex.Match(activity.Text.ToLower()).Groups;
             var left = int.Parse(group[1].Value);
             var right = int.Parse(group[2].Value);
 
-            int result = 0;
+            int dice = 0;
             for (int i = 0; i < left; i++)
             {
                 var generator = new Random();
-                result += generator.Next(1, right);
+                dice += generator.Next(1, right);
             }
-            return result.ToString();
+            return dice.ToString();
         }
 
         private string CalculateRegist(Activity activity)
         {
-            var group = RegistRegex.Match(activity.Text).Groups;
+            var group = RegistCommandRegex.Match(activity.Text.ToLower()).Groups;
             var active = int.Parse(group[1].Value);
             var passive = int.Parse(group[2].Value);
 
@@ -119,11 +127,38 @@ namespace CthulhuDiceBot.Factories
             string result = null;
             if (isSuccess)
             {
-                result = $"Regist succeeded. Target = {target} Dice = {dice}";
+                result = $"Regist succeeded! Target = {target} Dice = {dice}";
             }
             else
             {
-                result = $"Regist failed. Target = {target} Dice = {dice}";
+                result = $"Regist failed... Target = {target} Dice = {dice}";
+            }
+            return result;
+        }
+
+        private string CalculateJudge(Activity activity)
+        {
+            var group = JudgeCommandRegex.Match(activity.Text).Groups;
+            var left = int.Parse(group[1].Value);
+            var right = int.Parse(group[2].Value);
+            var target = int.Parse(group[3].Value);
+
+            int dice = 0;
+            for (int i = 0; i < left; i++)
+            {
+                var generator = new Random();
+                dice += generator.Next(1, right);
+            }
+
+            string result = null;
+            bool isSuccess = (dice <= target);
+            if (isSuccess)
+            {
+                result = $"Succeeded! {dice}/{target}";
+            }
+            else
+            {
+                result = $"Failed... {dice}/{target}";
             }
             return result;
         }
