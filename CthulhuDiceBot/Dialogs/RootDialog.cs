@@ -2,7 +2,6 @@
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CthulhuDiceBot.Dialogs
