@@ -53,7 +53,6 @@ namespace CthulhuDiceBot.Factories
                 "Judge",
                 Tuple.Create<Regex, Func<Activity, string>>(JudgeCommandRegex, (a) => CalculateJudge(a))
             );
-
         }
 
         #endregion
@@ -81,7 +80,8 @@ namespace CthulhuDiceBot.Factories
         public bool IsCommand(Activity activity)
         {
             bool result = false;
-            if (MentionRegex.IsMatch(activity.Text))
+            bool isGroup = activity.Conversation.IsGroup ?? false;
+            if (!isGroup || MentionRegex.IsMatch(activity.Text.ToLower()))
             {
                 foreach (var entry in dictionary.Values)
                 {
@@ -104,6 +104,10 @@ namespace CthulhuDiceBot.Factories
             var group = DiceCommandRegex.Match(activity.Text.ToLower()).Groups;
             var left = int.Parse(group[1].Value);
             var right = int.Parse(group[2].Value);
+            if (right <= 0)
+            {
+                throw new ArgumentException("Please specify 1 or more");
+            }
 
             int dice = 0;
             for (int i = 0; i < left; i++)
@@ -138,7 +142,7 @@ namespace CthulhuDiceBot.Factories
 
         private string CalculateJudge(Activity activity)
         {
-            var group = JudgeCommandRegex.Match(activity.Text).Groups;
+            var group = JudgeCommandRegex.Match(activity.Text.ToLower()).Groups;
             var left = int.Parse(group[1].Value);
             var right = int.Parse(group[2].Value);
             var target = int.Parse(group[3].Value);
