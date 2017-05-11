@@ -22,7 +22,7 @@ namespace CthulhuDiceBot.Dialogs
             var activity = await result as Activity;
 
             // return our reply to the user
-            await context.PostAsync(CommandFactory.Instance.GetCommand(activity).Invoke(activity));
+            await context.PostAsync(CommandFactory.Instance.ExecuteCommand(activity));
 
             context.Wait(MessageReceivedAsync);
         }
