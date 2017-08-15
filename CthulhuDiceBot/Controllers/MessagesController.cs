@@ -1,29 +1,40 @@
-﻿using CthulhuDiceBot.Factories;
-using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Connector;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using CthulhuDiceBot.Factories;
+using Microsoft.ApplicationInsights;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Connector;
 
-namespace CthulhuDiceBot
+namespace CthulhuDiceBot.Controllers
 {
     [BotAuthentication]
     public class MessagesController : ApiController
     {
+        private static readonly TelemetryClient Client = new TelemetryClient();
+
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message && CommandFactory.Instance.IsCommand(activity))
+            try
             {
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                if (activity.Type == ActivityTypes.Message && CommandFactory.Instance.IsCommand(activity))
+                {
+                    await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                }
+                else
+                {
+                    HandleSystemMessage(activity);
+                }
             }
-            else
+            catch (Exception e)
             {
-                HandleSystemMessage(activity);
+                Client.TrackException(e);
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
