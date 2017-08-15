@@ -143,7 +143,14 @@ namespace CthulhuDiceBot.Factories
             }
             else
             {
-                result = $"失敗・・・。 {dice}/{target}";
+                if (dice - target == 1)
+                {
+                    result = $"いちたりない・・・。 {dice}/{target}";
+                }
+                else
+                {
+                    result = $"失敗・・・。 {dice}/{target}";
+                }
             }
             return result;
         }
