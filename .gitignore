@@ -240,3 +240,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/CthulhuDiceBot/Web.Release.config
+/CthulhuDiceBot/Web.Debug.config
+/CthulhuDiceBot/Web.config
