@@ -1,2 +1,17 @@
 # CthulhuDiceBot
 Dice Bot for Call Of Cthulhu(TRPG).
+
+日本語で動く、クトゥフル用ダイスbot
+
+主なアクションは以下の3つです
+
+- ダイスロール
+    - 例）1d100でダイス振って
+- 技能判定
+    - 例）目標値50で目星
+- 抵抗判定
+    - 例）10と12で抵抗判定
+
+以下でお試し頂けます。
+
+<iframe class="bot-page-webchat with-webchat" src="https://webchat.botframework.com/embed/cthulhudicebot?features=webchatpreview&amp;t=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlRCSlBsZkFyQlpJODVicGdnVjhlTUFmelZVMCIsIng1dCI6IlRCSlBsZkFyQlpJODVicGdnVjhlTUFmelZVMCJ9.eyJib3QiOiJjdGh1bGh1ZGljZWJvdCIsImNvbnYiOiJkYzZmOTAxN2IxOWY0OGNmODVjZDRhYWE5NjgwMjI1YyIsImlzcyI6Imh0dHBzOi8vZGV2LmJvdGZyYW1ld29yay5jb20vIiwiYXVkIjoiaHR0cHM6Ly93ZWJjaGF0LmJvdGZyYW1ld29yay5jb20vIiwiZXhwIjoxNTA0NjIxOTU0LCJuYmYiOjE1MDQ2MTgzNTR9.IKpbO9QAV-4hdJkhIjuAZuPDDvVHEphPI55ULFle0sbhJ0lQGbTJ4ThAJJS52cJ8e8JzoYVjTx3NaRfhwNDnCI0ccAYh-NxcX-ZtIe3GLcnIJrh5_1QHydCt2xsxvgR2CFungHnoL2hyZ00f0k3v-5idc39fJrx1aFdctlRqFPz4jKtlWRLhFsEVNYG7deiOe0JxiL-QdDpWK8IpPmnWI6zletpcEeOqKHmg8-yHMVnoCmFCeBEYULFNcdrKpe_IkDHrTAKadyjNMzjx5yHFvAxgEbZY1BJJaveTCOcbvaFVbD2QhrT-k6fF1W26MtMMUPFIhpYXEcRDURtRBUJqtw"></iframe>
